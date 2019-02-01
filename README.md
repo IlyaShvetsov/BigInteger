@@ -1,1 +1,1 @@
-class for working with big integers
+Class for working with big integers
