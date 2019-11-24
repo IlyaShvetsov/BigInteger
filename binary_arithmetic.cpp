@@ -9,14 +9,14 @@ using std::string;
 const BigInteger operator+(const BigInteger& first, const BigInteger& second) {
     if (first.value.size() < second.value.size()) {
         return second + first;
-	}
+      }
 
     if (first.sign && !second.sign) {
         return first - (-second);
-	}
+      }
     if (!first.sign && second.sign) {
         return second - (-first);
-	}
+    }
 
     BigInteger ans;
     size_t maxSize = first.value.size(), minSize = second.value.size();
@@ -35,7 +35,7 @@ const BigInteger operator+(const BigInteger& first, const BigInteger& second) {
         ans.value.push_back(ans.value[ans.value.size()-1]);
         for (int i = maxSize - 2; i >= 0; --i) {
             ans.value[i + 1] = ans.value[i];
-		}
+            }
         ans.value[0] = temp;
     }
 
@@ -48,40 +48,40 @@ const BigInteger operator+(const BigInteger& first, const BigInteger& second) {
 const BigInteger operator-(const BigInteger& first, const BigInteger& second) {
     if (first.sign && !second.sign) {
         return first + (-second);
-	}
+      }
     if (!first.sign && second.sign) {
         return first + (-second);
-	}
+      }
 
     if (((first < second) && first.sign) || ((first > second) && !first.sign)) {
         return -(second - first);
-	}
+      }
 
     BigInteger ans;
     char temp = 0;
     for (int i = static_cast<int>(first.value.size() - 1); i >= static_cast<int>(first.value.size() - second.value.size()); --i) {
         if (temp == -1) {
             temp = 0;
-		}
+            }
         if (temp != 0) {
             temp = -1;
-		}
+            }
         if (first.value[i] + temp < second.value[i - first.value.size() + second.value.size()]) {
             temp += 10;
-		}
+            }
         ans.value.push_back(first.value[i] - second.value[i - first.value.size() + second.value.size()] + temp);
     }
 
     for (int i = static_cast<int>(first.value.size() - second.value.size() - 1); i >= 0; --i) {
         if (temp == -1) {
             temp = 0;
-		}
+            }
         if (temp != 0) {
             temp = -1;
-		}
+            }
         if (first.value[i] + temp < 0) {
             temp += 10;
-		}
+            }
         ans.value.push_back(first.value[i] + temp);
     }
 
@@ -89,8 +89,8 @@ const BigInteger operator-(const BigInteger& first, const BigInteger& second) {
     for( ; j <= static_cast<int>(ans.value.size()); ++j) {
         if (ans.value[ans.value.size() - j] != 0) {
             break;
-		}
-	}
+            }
+      }
 
     ans.value.resize(ans.value.size() - j + 1);
     // reverse //
@@ -108,11 +108,11 @@ const BigInteger operator-(const BigInteger& first, const BigInteger& second) {
 const BigInteger operator*(const BigInteger& first, const BigInteger& second) {
     if (!first || !second) {
         return 0;
-	}
+      }
 
     if (second.value.size() > first.value.size()) {
         return second*first;
-	}
+      }
 
     BigInteger ans;
     ans.sign = (first.sign == second.sign);
@@ -129,7 +129,7 @@ const BigInteger operator*(const BigInteger& first, const BigInteger& second) {
     }
     if (ans.value[ans.value.size() - 1] == 0) {
         ans.value.resize(ans.value.size() - 1);
-	}
+      }
     // reverse
     for (int i = 0; i < static_cast<int>(ans.value.size()/2); ++i) {
         char temp = ans.value[i];
@@ -145,7 +145,7 @@ const BigInteger operator*(const BigInteger& first, const BigInteger& second) {
 const BigInteger operator/(const BigInteger& first, const BigInteger& _second) {
     if (first.abs() < _second.abs()) {
         return 0;
-	}
+      }
 
     BigInteger ans;
     ans.sign = (first.sign == _second.sign);
@@ -156,7 +156,7 @@ const BigInteger operator/(const BigInteger& first, const BigInteger& _second) {
     temp.sign = true;
     for (int i = 0; i < static_cast<int>(second.value.size()); ++i) {
         temp.value.push_back(first.value[i]);
-	}
+      }
     int k = second.value.size();
     if (temp < second) {
         temp.value.push_back(first.value[k]);
@@ -167,14 +167,14 @@ const BigInteger operator/(const BigInteger& first, const BigInteger& _second) {
         for (j = 1; j < 10; ++j) {
             if (temp < second*j) {
                 break;
-			}
-		}
+                  }
+            }
         j--;
         temp -= second*j;
         ans.value.push_back(j);
         if (i != static_cast<int>(first.value.size())) {
             temp.value.push_back(first.value[i]);
-		}
+            }
     }
 
     return ans;
